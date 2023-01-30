@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Direccion>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Direcciones</h1>
+
+<p>
+    <a asp-action="Create">Nueva direccion</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Calle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Altura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ciudad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoPostal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Persona)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Calle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Altura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ciudad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoPostal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Persona.Apellido)
+            </td>
+            <td>
+                <a class="fas fa-edit fa-lg" asp-action="Edit" asp-route-id="@item.Id"></a> |
+                <a class="fas fa-info-circle fa-lg" style='color: black' asp-action="Details" asp-route-id="@item.Id"></a> |
+                <a class="fas fa-trash-alt fa-lg" style='color:#ee5353' asp-action="Delete" asp-route-id="@item.Id"></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

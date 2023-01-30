@@ -1,0 +1,167 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Funcion>
+
+@{
+    ViewData["Title"] = "Funciones";
+}
+
+<h1>Funciones futuras</h1>
+@if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Nueva funcion</a>
+    </p>
+ }
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @Html.Raw(TempData["ErrorMessage"]).ToString()
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaYHora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pelicula)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ButacasDisponibles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Confirmada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duracion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sala)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+ <tbody>
+@foreach (var item in ViewBag.FuncionesFuturas) {
+        <tr>
+            <td>
+                @item.FechaYHora
+            </td>
+            <td>
+                @item.Pelicula.Titulo
+            </td>
+            <td>
+                @item.Descripcion
+            </td>
+            <td>
+                @item.ButacasDisponibles
+            </td>
+            <td>
+                @if(item.Confirmada){
+                    <p>Si</p>
+                } else {
+                    <p>No</p>
+                }
+            </td>
+            <td>
+                @item.Duracion
+            </td>
+            <td>
+                @item.Sala.Id
+            </td>
+            @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+            {
+                <td>
+                    <a class="fas fa-edit fa-lg" asp-action="Edit" asp-route-id="@item.Id"></a> |
+                    <a class="fas fa-info-circle fa-lg" style='color: black' asp-action="Details" asp-route-id="@item.Id"></a> |
+                    <a class="fas fa-trash-alt fa-lg" style='color:#ee5353' asp-action="Delete" asp-route-id="@item.Id"></a> |
+                        <a class="btn btn-secondary reservas" asp-controller="Reservas" asp-action="ReservasPorFuncion" asp-route-id="@item.Id">Ver reservas</a>
+                </td>
+              }
+        </tr>
+}
+    </tbody>
+</table>
+
+<h1>Funciones pasadas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaYHora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pelicula)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ButacasDisponibles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Confirmada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duracion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sala)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.FuncionesPasadas)
+        {
+            <tr>
+                <td>
+                    @item.FechaYHora
+                </td>
+                <td>
+                    @item.Pelicula.Titulo
+                </td>
+                <td>
+                    @item.Descripcion
+                </td>
+                <td>
+                    @item.ButacasDisponibles
+                </td>
+                <td>
+                    @if (item.Confirmada)
+                    {
+                        <p>Si</p>
+                    }
+                    else
+                    {
+                        <p>No</p>
+                    }
+                </td>
+                <td>
+                    @item.Duracion
+                </td>
+                <td>
+                    @item.Sala.Id
+                </td>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a class="fas fa-edit fa-lg" asp-action="Edit" asp-route-id="@item.Id"></a> |
+                        <a class="fas fa-info-circle fa-lg" style='color: black' asp-action="Details" asp-route-id="@item.Id"></a> |
+                        <a class="fas fa-trash-alt fa-lg" style='color:#ee5353' asp-action="Delete" asp-route-id="@item.Id"></a>
+                        <a class="btn btn-secondary reservas" asp-controller="Reservas" asp-action="ReservasPorFuncion" asp-route-id="@item.Id">Ver reservas</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

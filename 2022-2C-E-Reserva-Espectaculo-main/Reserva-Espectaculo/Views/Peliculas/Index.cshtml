@@ -1,0 +1,74 @@
+﻿@using Reserva_Espectaculo.Helpers
+@model IEnumerable<Reserva_Espectaculo.Models.Pelicula>
+
+@{
+    ViewData["Title"] = "Peliculas";
+    TipoDeGenero g = (TipoDeGenero)Enum.Parse(typeof(TipoDeGenero), TempData["SelectedGender"].ToString());
+}
+
+<h1>Peliculas</h1>
+
+@if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Cargar Pelicula</a>
+    </p>
+}
+
+<form asp-action="Index" method="get" class="row">
+    <div class="form-group col-md-4">
+        <!--<label asp-for="Mes" class="control-label"></label>-->
+        
+        <select name="genero" class="form-control" asp-items="@Html.GetEnumSelectListWithDefaultValue<TipoDeGenero>(g)"></select>
+        
+    </div>
+    <div class="form-group col-md-4">
+        <input type="submit" value="Buscar" class="btn btn-primary" />
+    </div>
+</form>
+
+@if(Model.Count() == 0){
+    <p>No existen películas para la categoría seleccionada</p>
+}
+<div class="row row-cols-md-4">
+    @foreach (var item in Model) {
+    <div class="col-md-3 mr-4">
+        <div class="card mb-3" style="width: 20rem;">
+            <div class="card-image-container">
+                    @if (item.Foto != null ) 
+                    {
+                        <img src="..@Html.DisplayFor(modelItem => item.Foto)" class="image-pelicula-card">
+                    }else{
+                        <img src="../img/peliculas/default.jpg" class="image-pelicula-card">
+                    }
+            </div>
+
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <td>
+                             <h6 class="card-title" style="display: inline-block;">@Html.DisplayFor(modelItem => item.Titulo)</h6>
+                        </td>
+                        <td class="justify-content-end">
+                                @if(User.IsInRole("Empleado") || User.IsInRole("Admin")){
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="buttonPelicula"><i class="fas fa-edit fa-lg"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="buttonPelicula"><i class="fas fa-trash-alt fa-lg"></i></a>
+                                }else{
+                                    @if (singInManager.IsSignedIn(User))
+                                    {
+                                        <a asp-controller="Reservas" asp-action="Create" asp-route-idPelicula="@item.Id" class="buttonPelicula">Reservar</a>
+                                    }else{
+                                        <a asp-controller="Account" asp-action="IniciarSesion" class="buttonPelicula">Reservar</a>
+                                    }
+                                    
+                                }
+                        </td>
+                    </tr>
+                         <p>@Html.DisplayFor(modelItem => item.Descripcion)</p>
+                </table>
+            </div>
+        </div>
+    </div>
+    }
+
+</div>

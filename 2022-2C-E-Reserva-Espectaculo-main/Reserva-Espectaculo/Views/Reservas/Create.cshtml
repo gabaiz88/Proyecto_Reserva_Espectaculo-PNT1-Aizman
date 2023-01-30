@@ -1,0 +1,64 @@
+﻿@model Reserva_Espectaculo.Models.Reserva
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear</h1>
+
+<h4>Reserva</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4 card-image-container">
+        @if (ViewBag.Pelicula.Foto != null)
+        {
+            <img src="..@ViewBag.Pelicula.Foto" class="image-pelicula-card">
+        }
+        else
+        {
+            <img src="~/img/peliculas/default.jpg" class="image-pelicula-card">
+        }
+    </div>
+    <div class="col-md-4">
+        <h2>Reserva película <span>@ViewBag.Pelicula.Titulo</span></h2>
+        <form asp-action="Create" asp-route-idPelicula="@ViewBag.Pelicula.Id">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Funcion" class="control-label"></label>
+                <select onChange="precioSala()" id="FuncionId" asp-for="FuncionId" class="form-control" asp-items="ViewBag.Funciones">
+                    <option value="-1">Seleccione la función</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CantidadButacas" class="control-label"></label>
+                <input onChange="precioSala()" id="CantidadButacas" asp-for="CantidadButacas" class="form-control" />
+                <span asp-validation-for="CantidadButacas" class="text-danger"></span>
+            </div>
+            <!--<div class="form-group">
+                <select asp-for="ClienteId" class ="form-control" asp-items="ViewBag.ClienteId"></select>
+            </div>-->
+            
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h3>Resumen</h3>
+        <h5>Precio por butaca $<span id="PrecioButacaTxt">0</span></h5>
+        <h5>Cantidad de butacas: <span id="CantidadButacasTxt">0</span></h5>
+        <h4>Total $<span id="TotalTxt">0</span></h4>
+    </div>
+
+</div>
+
+@if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+{
+    <div>
+        <a asp-action="Index">Volver</a>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

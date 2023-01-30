@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Clientes</h1>
+
+<p>
+    <a asp-action="Create">Nuevo cliente</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dni)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion.Calle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion.Altura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion.Ciudad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaAlta)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.Direccion.Calle)
+            </td>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.Direccion.Altura)
+            </td>
+            <td>
+                @Html.DisplayNameFor(modelItem => item.Direccion.Ciudad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaAlta)
+            </td>
+            <td>
+                    <a class="fas fa-edit fa-lg" asp-action="Edit" asp-route-id="@item.Id"></a> |
+                <a class="fas fa-info-circle fa-lg" style='color: black' asp-action="Details" asp-route-id="@item.Id"></a> |
+                <a class="fas fa-trash-alt fa-lg" style='color:#ee5353' asp-action="Delete" asp-route-id="@item.Id"></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

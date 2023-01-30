@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Reserva";
+}
+
+<div id="preloader">
+    @if (ViewBag.Mensaje == null)
+    {
+        <a asp-action="Seed" asp-controller="PreCargaDB"><img id="play-icon" src=".\img\icons8-play-50.png" /></a>
+        <div><h6 id="textoInicio">Click para iniciar</h6></div>
+    }
+</div>

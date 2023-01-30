@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Recaudacion";
+}
+
+
+<form asp-action="Recaudacion" method="get" class="row">
+        <div class="form-group col-md-4">
+            <!--<label asp-for="Pelicula" class="control-label"></label>-->
+            <select name="idPelicula" class="form-control" asp-items="ViewBag.PeliculaId"></select>
+        </div>
+        <div class="form-group col-md-4">
+            <!--<label asp-for="Mes" class="control-label"></label>-->
+            <select name="mes" class="form-control" asp-items="@Html.GetEnumSelectList<Mes>()"></select>
+        </div>
+        <div class="form-group col-md-4">
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+        </div>
+ </form>
+
+
+    <h1>Recaudacion</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaAlta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CantidadButacas)
+                </th>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                <th>
+                    @Html.DisplayNameFor(model => model.Cliente)
+                </th>
+                }
+                <th>
+                    @Html.DisplayNameFor(model => model.Funcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Funcion.Pelicula.Titulo)
+                </th>
+                <th>
+                    Precio por butaca
+                </th>
+                <th>
+                    Total
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in ViewBag.Reservas)
+        {
+            <tr>
+                <td>
+                    @item.FechaAlta
+                </td>
+                <td>
+                    @item.CantidadButacas
+                </td>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                <td>
+                    @item.Cliente.Apellido
+                </td>
+                }
+                <td>
+                    @item.Funcion.FechaYHora
+                </td>
+                <td>
+                    @item.Funcion.Pelicula.Titulo
+                </td>
+                <td>
+                    $ @item.Funcion.Sala.TipoSala.Precio
+                </td>
+                <td>
+                    @((item.Funcion.Sala.TipoSala.Precio * item.CantidadButacas).ToString("c"))
+                </td>
+            </tr>
+}
+        </tbody>
+    </table>
+    <h3>Total  $@ViewBag.Total</h3>

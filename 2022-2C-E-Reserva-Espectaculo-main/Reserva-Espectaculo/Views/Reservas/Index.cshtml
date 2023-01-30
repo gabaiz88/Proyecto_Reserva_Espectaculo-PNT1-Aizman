@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Reservas";
+}
+
+<h1>@ViewData["Title"]</h1>
+@if(Model.Count() == 0){
+    <p>No hay reservas para la función seleccionada</p>
+}else{
+    <h1>Reservas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaAlta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadButacas)
+            </th>
+            @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cliente)
+                    </th>
+                }
+            <th>
+                @Html.DisplayNameFor(model => model.Funcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Funcion.Pelicula.Titulo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaAlta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CantidadButacas)
+                </td>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cliente.Apellido)
+                       </td>
+                    }
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcion.FechaYHora)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Funcion.Pelicula.Titulo)
+                </td>
+                <td>
+                    @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                    {
+                        <a class="fas fa-edit fa-lg" asp-action="Edit" asp-route-id="@item.Id">|</a>
+                        <a class="fas fa-info-circle fa-lg" style='color: black' asp-action="Details" asp-route-id="@item.Id">|</a>
+                    }
+                    <a class="fas fa-trash-alt fa-lg" style='color:#ee5353' asp-action="Delete" asp-route-id="@item.Id"></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}

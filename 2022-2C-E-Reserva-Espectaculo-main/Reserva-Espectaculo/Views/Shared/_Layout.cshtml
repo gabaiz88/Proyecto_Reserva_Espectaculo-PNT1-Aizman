@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Reserva_Espectaculo</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+
+</head>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1 nav justify-content-center">
+                    @if (singInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Funciones" asp-action="Index">Funciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">Peliculas</a>
+                        </li>
+                        @if (User.IsInRole("Cliente"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="MisReservas">Mis reservas</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Salas" asp-action="Index">Salas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Clientes" asp-action="Index">Clientes</a>
+                            </li>                          
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Direcciones" asp-action="Index">Direccion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="TipoSalas" asp-action="Index">Tipo Salas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="Recaudacion">Recaudación</a>
+                            </li>
+                        }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                Bienvenido @User.Identity.Name
+                            </a>
+                            <div class="dropdown-menu">
+                                @if (User.IsInRole("Cliente"))
+                                {
+                                    var userEmail = User.Identities.First();
+                                    
+
+                                    <a class="dropdown-item" asp-controller="Clientes" asp-action="DetailsByUsername" >Ver perfil</a>
+                                }
+                                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                                {
+                                    <a class="dropdown-item" asp-controller="Empleados" asp-action="DetailsByUsername" >Ver perfil</a>
+                                }
+                                <div class="dropdown-divider"></div>
+                                <button type="button" class="btn btn-primary">
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="CerrarSesion">Cerrar Sesion</a>
+                                </button>
+                            </div>
+                        </li>
+ 
+                    }
+                     else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="IniciarSesion">Iniciar Sesion</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Registrar">Registrarse</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">Peliculas</a>
+                        </li>
+                     }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-muted">
+        <div class="footer_1">
+            <div class="footer_1_logo">
+            </div>
+        </div>
+        <div class="footer_2">
+            @*<img src="./img/rollo_pelicula.png"/>*@
+            <h4>Reserva de Espectaculo, TU CINE!</h4>
+            <h5>Veni a conocernos</h5>
+        </div>
+        <div class="footer_redes">
+            <a class="footer_redes_1" href="http://www.instagram.com"></a>
+                <a class="footer_redes_1_insta" href="http://www.instagram.com"></a>
+            <a class="footer_redes_2" href="http://www.facebook.com"> </a>
+                <a class="footer_redes_2_face" href="http://www.facebook.com"></a>
+        </div>
+        @if (ViewBag.Mensaje == null)
+            {
+                <a asp-action="Seed" asp-controller="PreCargaDB" class="btn btn-sm btn-info">Pre Carga Db</a>
+            }
+            &copy; 2022 - Reserva_Espectaculo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+       
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/b1f327edcd.js" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

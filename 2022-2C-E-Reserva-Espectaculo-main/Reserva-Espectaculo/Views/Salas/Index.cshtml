@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Sala>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Salas</h1>
+
+<p>
+    <a asp-action="Create">Nueva sala</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CapacidadButacas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoSala)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CapacidadButacas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoSala.Nombre)
+            </td>
+            <td>
+                    <a class="fas fa-edit fa-lg" asp-action="Edit" asp-route-id="@item.Id"></a> |
+                    <a class="fas fa-info-circle fa-lg" style='color: black' asp-action="Details" asp-route-id="@item.Id"></a>
+       
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

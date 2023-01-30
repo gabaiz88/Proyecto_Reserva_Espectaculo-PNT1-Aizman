@@ -1,0 +1,192 @@
+﻿@model IEnumerable<Reserva_Espectaculo.Models.Reserva>
+
+@{
+    ViewData["Title"] = "Mis Reservas";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @Html.Raw(TempData["ErrorMessage"]).ToString()
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+}
+
+    <h1>Mis Reservas activas</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Foto
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaAlta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CantidadButacas)
+                </th>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                <th>
+                    @Html.DisplayNameFor(model => model.Cliente)
+                </th>
+                }
+                <th>
+                    @Html.DisplayNameFor(model => model.Funcion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Funcion.Pelicula.Titulo)
+                </th>
+                <th>
+                    Precio por butaca
+                </th>
+                <th>
+                    Total
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in ViewBag.ReservasFuturas)
+        {
+            <tr>
+                <th>
+                    <div style="width: 80px; height: 160px;">
+                    @if (item.Funcion.Pelicula.Foto != null)
+                    {
+                        <img style="max-width: 100%; max-height: 100%;" src="..@item.Funcion.Pelicula.Foto" class="image-pelicula-card">
+                    }
+                    else
+                    {
+                        <img src="~/img/peliculas/default.jpg" class="image-pelicula-card">
+                    }
+                    </div>
+                </th>
+                <td>
+                    @item.FechaAlta
+                </td>
+                <td>
+                    @item.CantidadButacas
+                </td>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                <td>
+                    @item.Cliente.Apellido
+                </td>
+                }
+                <td>
+                    @item.Funcion.FechaYHora
+                </td>
+                <td>
+                    @item.Funcion.Pelicula.Titulo
+                </td>
+                <td>
+                    $ @item.Funcion.Sala.TipoSala.Precio
+                </td>
+                <td>
+                    @((item.Funcion.Sala.TipoSala.Precio * item.CantidadButacas).ToString("c"))
+                </td>
+                <td>
+                    @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar |</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles |</a>
+                }
+                    <a asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
+                </td>
+            </tr>
+}
+        </tbody>
+    </table>
+
+
+<h1>Reservas pasadas</h1>
+
+<table class="table">
+<thead>
+    <tr>
+        <th>
+            Foto
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaAlta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CantidadButacas)
+        </th>
+        @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+        {
+        <th>
+            @Html.DisplayNameFor(model => model.Cliente)
+        </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.Funcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Funcion.Pelicula.Titulo)
+        </th>
+        <th>
+            Precio por butaca
+        </th>
+        <th>
+            Total
+        </th>
+        <th></th>
+    </tr>
+</thead>
+    <tbody>
+        @foreach (var item in ViewBag.ReservasPasadas)
+        {
+            <tr>
+                <th>
+                    <div style="width: 80px; height: 160px;">
+                        @if (@item.Funcion.Pelicula.Foto != null)
+                        {
+                            <img style="max-width: 100%; max-height: 100%;" src="..@item.Funcion.Pelicula.Foto" class="image-pelicula-card">
+                        }
+                        else
+                        {
+                            <img src="~/img/peliculas/default.jpg" class="image-pelicula-card">
+                        }
+                    </div>
+                </th>
+                <td>
+                    @item.FechaAlta
+                </td>
+                <td>
+                    @item.CantidadButacas
+                </td>
+                @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                {
+                    <td>
+                        @item.Cliente.Apellido
+                    </td>
+                }
+                <td>
+                    @item.Funcion.FechaYHora
+                </td>
+                <td>
+                    @item.Funcion.Pelicula.Titulo
+                </td>
+                <td>
+                    $ @item.Funcion.Sala.TipoSala.Precio
+                </td>
+                <td>
+                    @((item.Funcion.Sala.TipoSala.Precio * item.CantidadButacas).ToString("c"))
+                </td>
+                <td>
+                    @if (User.IsInRole("Empleado") || User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar |</a>
+                        <a asp-action="Details" asp-route-id="@item.Id">Detalles |</a>
+                    }
+                    <a asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
